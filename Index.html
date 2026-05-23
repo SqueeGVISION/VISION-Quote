@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vision Cleaning Services - Instant Quote</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f5f7fa; 
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container { 
+            max-width: 500px; 
+            margin: 0 auto; 
+            background: white; 
+            border-radius: 12px; 
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+        }
+        .header h1 { font-size: 22px; margin-bottom: 6px; }
+        .header p { opacity: 0.9; font-size: 14px; }
+        .form-section { padding: 24px 20px; }
+        .input-group { margin-bottom: 18px; }
+        label { 
+            display: block; 
+            font-weight: 600; 
+            margin-bottom: 6px; 
+            color: #1f2937;
+            font-size: 14px;
+        }
+        input, select { 
+            width: 100%; 
+            padding: 12px; 
+            border: 2px solid #e5e7eb; 
+            border-radius: 8px; 
+            font-size: 16px;
+            transition: border 0.2s;
+        }
+        input:focus, select:focus { 
+            outline: none; 
+            border-color: #3b82f6; 
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            background: #eff6ff;
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #dbeafe;
+        }
+        .checkbox-group input { 
+            width: auto; 
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        .checkbox-group label { margin: 0; font-weight: 500; }
+        .vision-badge {
+            background: #10b981;
+            color: white;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 6px;
+        }
+        button {
+            width: 100%;
+            background: #1e40af;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        button:hover { background: #1e3a8a; }
+        .results {
+            margin-top: 24px;
+            padding: 20px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+            display: none;
+        }
+        .results.show { display: block; }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 15px;
+        }
+        .result-row.total {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1e40af;
+            border-top: 2px solid #e5e7eb;
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+        .discount { color: #10b981; font-weight: 600; }
+        .cta-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 16px;
+        }
+        .cta-buttons button {
+            margin-top: 0;
+            font-size: 14px;
+            padding: 12px;
+        }
+        .cta-secondary { background: #10b981; }
+        .cta-secondary:hover { background: #059669; }
+        .disclaimer {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 16px;
+            text-align: center;
+        }
+        .areas {
+            text-align: center;
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Vision Cleaning Services</h1>
+            <p>Instant Window Cleaning Quote</p>
+        </div>
+        
+        <div class="form-section">
+            <div class="input-group">
+                <label for="city">Service Area</label>
+                <select id="city">
+                    <option value="Arcadia">Arcadia</option>
+                    <option value="Paradise Valley">Paradise Valley</option>
+                    <option value="Scottsdale">Scottsdale</option>
+                    <option value="Chandler">Chandler</option>
+                    <option value="Gilbert">Gilbert</option>
+                    <option value="Biltmore">Biltmore</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="sqft">Home Square Footage</label>
+                <input type="number" id="sqft" placeholder="e.g. 2500" min="0">
+            </div>
+
+            <div class="input-group">
+                <label for="panels">Solar Panels</label>
+                <input type="number" id="panels" placeholder="0" min="0" value="0">
+            </div>
+
+            <div class="input-group">
+                <label for="screens">Sunscreens</label>
+                <input type="number" id="screens" placeholder="0" min="0" value="0">
+            </div>
+
+            <div class="input-group">
+                <div class="checkbox-group">
+                    <input type="checkbox" id="vision">
+                    <label for="vision">I follow Vision Cleaning on social <span class="vision-badge">SAVE $25</span></label>
+                </div>
+            </div>
+
+            <button onclick="calculateQuote()">Get My Quote</button>
+
+            <div id="results" class="results">
+                <div class="result-row">
+                    <span>Base Window Cleaning:</span>
+                    <span id="basePrice">$0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Solar Panels:</span>
+                    <span id="panelPrice">$0.00</span>
+                </div>
+                <div class="result-row">
+                    <span>Sunscreens:</span>
+                    <span id="screenPrice">$0.00</span>
+                </div>
+                <div class="result-row discount" id="discountRow" style="display:none;">
+                    <span>VISION Discount:</span>
+                    <span>-$25.00</span>
+                </div>
+                <div class="result-row total">
+                    <span>Total:</span>
+                    <span id="totalPrice">$0.00</span>
+                </div>
+                
+                <div class="cta-buttons">
+                    <button onclick="copyQuote()">Copy Quote</button>
+                    <button class="cta-secondary" onclick="textToBook()">Text to Book</button>
+                </div>
+                
+                <div class="disclaimer">
+                    *Final solar panel & sunscreen count verified on-site by technician.<br>
+                    Includes interior, exterior, tracks, frames, and bug-screens.
+                </div>
+            </div>
+
+            <div class="areas">
+                Serving Arcadia • PV • Scottsdale • Chandler • Gilbert • Biltmore
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateQuote() {
+            const sqft = parseFloat(document.getElementById('sqft').value) || 0;
+            const panels = parseInt(document.getElementById('panels').value) || 0;
+            const screens = parseInt(document.getElementById('screens').value) || 0;
+            const city = document.getElementById('city').value;
+            const hasVision = document.getElementById('vision').checked;
+            
+            if (sqft === 0) {
+                alert('Please enter your home square footage');
+                return;
+            }
+            
+            const basePrice = sqft * 0.15;
+            const panelPrice = panels * 7;
+            const screenPrice = screens * 7;
+            const subtotal = basePrice + panelPrice + screenPrice;
+            const discount = hasVision ? 25 : 0;
+            const total = subtotal - discount;
+            
+            document.getElementById('basePrice').textContent = `$${basePrice.toFixed(2)}`;
+            document.getElementById('panelPrice').textContent = `$${panelPrice.toFixed(2)}`;
+            document.getElementById('screenPrice').textContent = `$${screenPrice.toFixed(2)}`;
+            document.getElementById('totalPrice').textContent = `$${total.toFixed(2)}`;
+            
+            document.getElementById('discountRow').style.display = hasVision ? 'flex' : 'none';
+            document.getElementById('results').classList.add('show');
+            
+            // Store for copy/text functions
+            window.currentQuote = {
+                city, sqft, panels, screens, basePrice, panelPrice, screenPrice, discount, total, hasVision
+            };
+        }
+        
+        function getQuoteText() {
+            const q = window.currentQuote;
+            if (!q) return '';
+            let text = `Vision Cleaning Quote for ${q.city}:\n`;
+            text += `${q.sqft} sq ft home = $${q.basePrice.toFixed(2)}\n`;
+            if (q.panels > 0) text += `Solar: ${q.panels} x $7 = $${q.panelPrice.toFixed(2)}\n`;
+            if (q.screens > 0) text += `Sunscreens: ${q.screens} x $7 = $${q.screenPrice.toFixed(2)}\n`;
+            if (q.hasVision) text += `VISION discount: -$25.00\n`;
+            text += `Total: $${q.total.toFixed(2)}\n`;
+            text += `\nIncludes interior, exterior, tracks, frames, bug-screens.`;
+            return text;
+        }
+        
+        function copyQuote() {
+            const text = getQuoteText();
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Quote copied! You can now paste it in a text or email.');
+            });
+        }
+        
+        function textToBook() {
+            const text = getQuoteText();
+            const body = encodeURIComponent(`Hi! I'd like to book window cleaning.\n\n${text}`);
+            window.location.href = `sms:6024868993?&body=${body}`;
+        }
+    </script>
+</body>
+</html>
