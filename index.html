@@ -1,10 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vision Cleaning Services - Instant Quote</title>
+    <meta property="og:title" content="Instant Window Quote | Vision Cleaning Services">
+    <meta property="og:description" content="Arcadia, PV & Scottsdale pricing in 10 sec. Includes solar panels & sunscreens.">
+    <meta property="og:url" content="https://squeegvision.github.io/VISION-Quote/">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { 
@@ -158,17 +160,17 @@
 
             <div class="input-group">
                 <label for="sqft">Home Square Footage</label>
-                <input type="number" id="sqft" placeholder="e.g. 2500" min="0">
+                <input type="number" id="sqft" placeholder="e.g. 2500" min="0" inputmode="numeric">
             </div>
 
             <div class="input-group">
                 <label for="panels">Solar Panels</label>
-                <input type="number" id="panels" placeholder="0" min="0" value="0">
+                <input type="number" id="panels" placeholder="0" min="0" value="0" inputmode="numeric">
             </div>
 
             <div class="input-group">
                 <label for="screens">Sunscreens</label>
-                <input type="number" id="screens" placeholder="0" min="0" value="0">
+                <input type="number" id="screens" placeholder="0" min="0" value="0" inputmode="numeric">
             </div>
 
             <div class="input-group">
@@ -237,7 +239,7 @@
             const screenPrice = screens * 7;
             const subtotal = basePrice + panelPrice + screenPrice;
             const discount = hasVision ? 25 : 0;
-            const total = subtotal - discount;
+            const total = Math.max(0, subtotal - discount);
             
             document.getElementById('basePrice').textContent = `$${basePrice.toFixed(2)}`;
             document.getElementById('panelPrice').textContent = `$${panelPrice.toFixed(2)}`;
@@ -246,8 +248,8 @@
             
             document.getElementById('discountRow').style.display = hasVision ? 'flex' : 'none';
             document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({behavior: 'smooth'});
             
-            // Store for copy/text functions
             window.currentQuote = {
                 city, sqft, panels, screens, basePrice, panelPrice, screenPrice, discount, total, hasVision
             };
@@ -256,27 +258,30 @@
         function getQuoteText() {
             const q = window.currentQuote;
             if (!q) return '';
-            let text = `Vision Cleaning Quote for ${q.city}:\n`;
-            text += `${q.sqft} sq ft home = $${q.basePrice.toFixed(2)}\n`;
-            if (q.panels > 0) text += `Solar: ${q.panels} x $7 = $${q.panelPrice.toFixed(2)}\n`;
-            if (q.screens > 0) text += `Sunscreens: ${q.screens} x $7 = $${q.screenPrice.toFixed(2)}\n`;
-            if (q.hasVision) text += `VISION discount: -$25.00\n`;
-            text += `Total: $${q.total.toFixed(2)}\n`;
-            text += `\nIncludes interior, exterior, tracks, frames, bug-screens.`;
+            let text = `Vision Quote: ${q.city}, ${q.sqft}sqft`;
+            if (q.panels > 0) text += `, ${q.panels} solar`;
+            if (q.screens > 0) text += `, ${q.screens} screens`;
+            if (q.hasVision) text += `, VISION-$25`;
+            text += `. Total: $${q.total.toFixed(2)}`;
             return text;
         }
         
         function copyQuote() {
             const text = getQuoteText();
             navigator.clipboard.writeText(text).then(() => {
-                alert('Quote copied! You can now paste it in a text or email.');
+                alert('Quote copied! Paste in a text to 602-486-8993');
             });
         }
         
         function textToBook() {
             const text = getQuoteText();
-            const body = encodeURIComponent(`Hi! I'd like to book window cleaning.\n\n${text}`);
-            window.location.href = `sms:6024868993?&body=${body}`;
+            const phone = "6024868993";
+            const body = encodeURIComponent(`Hi Vision Cleaning! I'd like to book.\n\n${text}`);
+            
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+            const separator = isIOS ? '&' : '?';
+            
+            window.location.href = `sms:${phone}${separator}body=${body}`;
         }
     </script>
 </body>
